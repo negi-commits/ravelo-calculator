@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Ravelo - Cost of Manual Work Calculator
 
 A premium dark-themed calculator that shows businesses how much repetitive manual work costs them annually.
@@ -136,3 +137,7 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 | Preset tasks | `lib/calculator/presets.ts` |
 | CTA button links | `ResultsScreen.tsx` → "Get a Free Consultation" button |
 | SEO metadata | `app/layout.tsx` + `app/tools/cost-of-manual-work/page.tsx` |
+=======
+# ravelo-calculator
+A premium dark-themed calculator that shows businesses how much repetitive manual work costs them annually — with automated email report delivery
+>>>>>>> 47f49da29f9b5e733c8b05f629a8cf8d5cee4d11
