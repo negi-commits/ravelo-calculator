@@ -37,9 +37,9 @@ export default function ResultsScreen({ result, currency, onReset, onShowShare }
   const countedHours = useCountUp(Math.round(result.totalYearlyHours));
 
   return (
-    <div style={{ maxWidth: 780, margin: "0 auto", padding: "40px 20px 80px" }}>
+    <div style={{ maxWidth: 1080, margin: "0 auto", padding: "64px 24px 96px" }}>
       {/* Hero */}
-      <div style={{ textAlign: "center", marginBottom: 48, animation: "fadeUp 0.6s ease both" }}>
+      <div style={{ textAlign: "center", marginBottom: 64, animation: "fadeUp 0.6s ease both" }}>
         <div
           style={{
             display: "inline-block",
@@ -55,21 +55,21 @@ export default function ResultsScreen({ result, currency, onReset, onShowShare }
         <div
           style={{
             fontFamily: "Syne, sans-serif", fontWeight: 800,
-            lineHeight: 1, letterSpacing: -2, marginBottom: 12,
-            fontSize: "clamp(44px,8vw,80px)",
+            lineHeight: 1, letterSpacing: -2, marginBottom: 16,
+            fontSize: "clamp(56px,9vw,104px)",
             background: "linear-gradient(90deg,#f87171,#fb923c)",
             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
           }}
         >
           {formatMoney(countedCost, currency)}
         </div>
-        <p style={{ color: "#94a3b8", fontSize: 16 }}>
+        <p style={{ color: "#94a3b8", fontSize: 18 }}>
           is being lost to repetitive manual work every year
         </p>
       </div>
 
       {/* 3 Stat cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))", gap: 16, marginBottom: 40 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))", gap: 20, marginBottom: 56 }}>
         {[
           { label: "Yearly Hours Lost",   value: `${countedHours.toLocaleString()} hrs`, icon: "⏱️", color: "#818cf8" },
           { label: "Tasks Analyzed",      value: result.tasks.length,                    icon: "📋", color: "#5b8bff" },
@@ -79,12 +79,12 @@ export default function ResultsScreen({ result, currency, onReset, onShowShare }
             key={label}
             style={{
               background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: 16, padding: "24px 20px", animation: "fadeUp 0.6s ease both",
+              borderRadius: 18, padding: "30px 28px", animation: "fadeUp 0.6s ease both",
             }}
           >
-            <div style={{ fontSize: 24, marginBottom: 10 }}>{icon}</div>
-            <div style={{ fontFamily: "Syne, sans-serif", fontSize: 24, fontWeight: 700, color }}>{value}</div>
-            <div style={{ fontSize: 12, color: "#6b7280", marginTop: 4 }}>{label}</div>
+            <div style={{ fontSize: 28, marginBottom: 12 }}>{icon}</div>
+            <div style={{ fontFamily: "Syne, sans-serif", fontSize: 30, fontWeight: 700, color }}>{value}</div>
+            <div style={{ fontSize: 13, color: "#6b7280", marginTop: 6 }}>{label}</div>
             {note && <div style={{ fontSize: 11, color: "#22d3a5", marginTop: 4 }}>{note}</div>}
           </div>
         ))}
@@ -94,11 +94,11 @@ export default function ResultsScreen({ result, currency, onReset, onShowShare }
       <div
         style={{
           background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.07)",
-          borderRadius: 20, overflow: "hidden", marginBottom: 32,
+          borderRadius: 20, overflow: "hidden", marginBottom: 40,
         }}
       >
-        <div style={{ padding: "20px 24px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-          <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: 16, fontWeight: 700 }}>Task Breakdown</h3>
+        <div style={{ padding: "22px 28px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+          <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: 18, fontWeight: 700 }}>Task Breakdown</h3>
         </div>
         {result.tasks.map((r, i) => {
           const pct = (r.yearlyCost / maxCost) * 100;
@@ -107,7 +107,7 @@ export default function ResultsScreen({ result, currency, onReset, onShowShare }
             <div
               key={r.task.id}
               style={{
-                padding: "16px 24px",
+                padding: "20px 28px",
                 borderBottom: i < result.tasks.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
                 animation: `fadeUp 0.5s ${i * 0.07}s both`,
               }}
@@ -151,13 +151,13 @@ export default function ResultsScreen({ result, currency, onReset, onShowShare }
         style={{
           background: "linear-gradient(135deg,rgba(91,139,255,0.1),rgba(34,211,165,0.08))",
           border: "1px solid rgba(91,139,255,0.2)",
-          borderRadius: 20, padding: "28px 32px", textAlign: "center", marginBottom: 24,
+          borderRadius: 20, padding: "40px 44px", textAlign: "center", marginBottom: 28,
         }}
       >
-        <h3 style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: 18, marginBottom: 8 }}>
+        <h3 style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: 22, marginBottom: 10 }}>
           Ready to automate this?
         </h3>
-        <p style={{ color: "#94a3b8", fontSize: 14, marginBottom: 20 }}>
+        <p style={{ color: "#94a3b8", fontSize: 15, marginBottom: 24 }}>
           Ravelo helps businesses eliminate repetitive work and reclaim their time.
         </p>
         <div style={{ display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>

@@ -63,8 +63,8 @@ export default function CalculatorScreen({
   }
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: "40px 20px 80px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32, flexWrap: "wrap", gap: 12 }}>
+    <div style={{ maxWidth: 1080, margin: "0 auto", padding: "64px 24px 96px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 40, flexWrap: "wrap", gap: 12 }}>
         <div>
           <button
             onClick={onBack}
@@ -72,10 +72,10 @@ export default function CalculatorScreen({
           >
             ← Back
           </button>
-          <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: 26, fontWeight: 800 }}>
+          <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: 32, fontWeight: 800 }}>
             Add your tasks
           </h2>
-          <p style={{ color: "#6b7280", fontSize: 14, marginTop: 4 }}>
+          <p style={{ color: "#6b7280", fontSize: 15, marginTop: 6 }}>
             The more tasks you add, the more accurate your number.
           </p>
         </div>

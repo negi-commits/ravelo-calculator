@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { formatMoney } from "@/lib/currency";
+import { formatMoney, CURRENCIES, CurrencyCode } from "@/lib/currency";
 import { Resend } from "resend";
 import nodemailer from "nodemailer";
+import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+
+// PDF generation + nodemailer require the Node.js runtime (not Edge).
+export const runtime = "nodejs";
 
 const LeadSchema = z.object({
   name:    z.string().optional(),
@@ -236,6 +240,127 @@ function buildClientReportHtml(lead: { name?: string; email: string; payload?: a
   </html>`;
 }
 
+// ─── Client report PDF (attached to the client email) ────────────────────────
+// pdf-lib's standard fonts use WinAnsi encoding, which can't render glyphs like
+// ₹ or emoji. Sanitize all drawn text and use ASCII-safe currency symbols.
+function pdfSafe(s: string): string {
+  return (s ?? "")
+    .replace(/₹/g, "Rs")               // ₹
+    .replace(/[→➔➤]/g, "->")  // → ➔ ➤
+    .replace(/[•]/g, "-")               // •
+    .replace(/[–—]/g, "-")         // – —
+    .replace(/[‘’]/g, "'")         // ‘ ’
+    .replace(/[“”]/g, '"')         // “ ”
+    .replace(/…/g, "...")               // …
+    .replace(/[^\x20-\x7E\xA0-\xFF]/g, "");  // drop remaining non-Latin1 glyphs
+}
+
+function moneyForPdf(amount: number, currency: CurrencyCode): string {
+  const n = new Intl.NumberFormat(CURRENCIES[currency].locale, {
+    maximumFractionDigits: 0,
+  }).format(amount || 0);
+  const sym = currency === "INR" ? "Rs " : currency === "AED" ? "AED " : CURRENCIES[currency].symbol;
+  return `${sym}${n}`;
+}
+
+async function buildClientReportPdf(lead: { name?: string; email: string; payload?: any }): Promise<Buffer> {
+  const name = pdfSafe(lead.name || "there");
+  const payload = lead.payload || {};
+  const result = payload.result || {};
+  const currency: CurrencyCode = (payload.currency as CurrencyCode) in CURRENCIES ? payload.currency : "USD";
+
+  const totalYearlyHours = result.totalYearlyHours || 0;
+  const totalYearlyCost = result.totalYearlyCost || 0;
+  const tasks: any[] = Array.isArray(result.tasks) ? result.tasks : [];
+
+  const doc = await PDFDocument.create();
+  doc.setTitle("Ravelo - Cost of Manual Work Report");
+  doc.setAuthor("Ravelo");
+  const page = doc.addPage([595.28, 841.89]); // A4 portrait
+  const { width: W, height: H } = page.getSize();
+  const font = await doc.embedFont(StandardFonts.Helvetica);
+  const bold = await doc.embedFont(StandardFonts.HelveticaBold);
+
+  const MARGIN = 50;
+  const accent = rgb(0.357, 0.545, 1);  // #5b8bff
+  const ink = rgb(0.06, 0.09, 0.16);
+  const muted = rgb(0.45, 0.5, 0.58);
+  const line = rgb(0.88, 0.9, 0.93);
+
+  const drawRight = (text: string, edge: number, y: number, size: number, f = font, color = ink) => {
+    page.drawText(text, { x: edge - f.widthOfTextAtSize(text, size), y, size, font: f, color });
+  };
+
+  // Header band
+  page.drawRectangle({ x: 0, y: H - 120, width: W, height: 120, color: rgb(0.024, 0.024, 0.055) });
+  page.drawText("RAVELO", { x: MARGIN, y: H - 52, size: 11, font: bold, color: accent });
+  page.drawText("Your Manual Work Cost Report", { x: MARGIN, y: H - 82, size: 20, font: bold, color: rgb(1, 1, 1) });
+  page.drawText("What repetitive work is costing your business", { x: MARGIN, y: H - 102, size: 10, font, color: rgb(0.6, 0.66, 0.75) });
+
+  let y = H - 160;
+  page.drawText(`Hi ${name},`, { x: MARGIN, y, size: 13, font: bold, color: ink });
+  y -= 20;
+  page.drawText("Thanks for using the Ravelo calculator. Here is your personalised breakdown:", { x: MARGIN, y, size: 10.5, font, color: muted });
+
+  // Headline cost box
+  y -= 32;
+  const boxH = 90;
+  page.drawRectangle({ x: MARGIN, y: y - boxH, width: W - MARGIN * 2, height: boxH, color: rgb(0.96, 0.97, 0.99), borderColor: line, borderWidth: 1 });
+  page.drawText("TOTAL ANNUAL COST OF MANUAL WORK", { x: MARGIN + 20, y: y - 30, size: 9, font: bold, color: muted });
+  page.drawText(moneyForPdf(totalYearlyCost, currency), { x: MARGIN + 20, y: y - 64, size: 30, font: bold, color: accent });
+  drawRight(`${Math.round(totalYearlyHours).toLocaleString()} hours lost per year`, W - MARGIN - 20, y - 64, 11, font, muted);
+  y -= boxH + 38;
+
+  // Task breakdown table
+  if (tasks.length > 0) {
+    page.drawText("Task Breakdown", { x: MARGIN, y, size: 13, font: bold, color: ink });
+    y -= 22;
+
+    const colTask = MARGIN;
+    const colAuto = MARGIN + 235;
+    const colHrs = W - MARGIN - 130; // right edge for hours
+    const colCost = W - MARGIN;      // right edge for cost
+    const maxNameW = colAuto - colTask - 14;
+
+    page.drawRectangle({ x: MARGIN, y: y - 6, width: W - MARGIN * 2, height: 22, color: rgb(0.95, 0.96, 0.98) });
+    page.drawText("TASK", { x: colTask + 6, y, size: 8.5, font: bold, color: muted });
+    page.drawText("AUTOMATION", { x: colAuto, y, size: 8.5, font: bold, color: muted });
+    drawRight("YEARLY HRS", colHrs, y, 8.5, bold, muted);
+    drawRight("YEARLY COST", colCost, y, 8.5, bold, muted);
+    y -= 24;
+
+    const autoLabel: Record<string, string> = { full: "Fully automatable", partial: "Partially", unlikely: "Unlikely" };
+
+    for (const t of tasks) {
+      if (y < 120) break; // single-page guard
+      let nm = pdfSafe(t.task?.name || "Unnamed Task");
+      while (nm.length > 3 && font.widthOfTextAtSize(nm, 10) > maxNameW) nm = nm.slice(0, -2);
+      if (nm !== pdfSafe(t.task?.name || "Unnamed Task")) nm = nm.slice(0, -1) + "...";
+
+      page.drawText(nm, { x: colTask + 6, y, size: 10, font, color: ink });
+      page.drawText(pdfSafe(autoLabel[t.task?.automatability] || t.task?.automatability || "-"), { x: colAuto, y, size: 9.5, font, color: muted });
+      drawRight(`${Math.round(t.yearlyHours || 0).toLocaleString()} hrs`, colHrs, y, 10, font, muted);
+      drawRight(moneyForPdf(t.yearlyCost || 0, currency), colCost, y, 10, bold, accent);
+      y -= 9;
+      page.drawLine({ start: { x: MARGIN, y }, end: { x: W - MARGIN, y }, thickness: 0.5, color: line });
+      y -= 17;
+    }
+  }
+
+  // CTA footer
+  if (y > 130) {
+    const fH = 72;
+    page.drawRectangle({ x: MARGIN, y: y - fH, width: W - MARGIN * 2, height: fH, color: rgb(0.06, 0.06, 0.11) });
+    page.drawText("Ready to cut this cost?", { x: MARGIN + 20, y: y - 26, size: 12, font: bold, color: rgb(1, 1, 1) });
+    page.drawText("We help businesses automate repetitive work and reclaim thousands of hours.", { x: MARGIN + 20, y: y - 44, size: 9, font, color: rgb(0.6, 0.66, 0.75) });
+    page.drawText("Get a free consultation  ->  ravelo.in", { x: MARGIN + 20, y: y - 60, size: 10, font: bold, color: accent });
+  }
+
+  page.drawText("Ravelo - You received this because you used our cost calculator.", { x: MARGIN, y: 40, size: 8, font, color: muted });
+
+  return Buffer.from(await doc.save());
+}
+
 // ─── POST handler ─────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
   try {
@@ -249,7 +374,7 @@ export async function POST(req: NextRequest) {
       const resend = new Resend(process.env.RESEND_API_KEY || "re_xxxxxxxxx");
       const { data, error } = await resend.emails.send({
         from: process.env.LEAD_NOTIFICATION_FROM || "onboarding@resend.dev",
-        to:   process.env.LEAD_NOTIFICATION_TO   || "ravelo.9283@gmail.com",
+        to:   process.env.LEAD_NOTIFICATION_TO   || "monunegi1190@gmail.com",
         subject: `New lead: ${lead.name || lead.email}`,
         html: buildTeamNotificationHtml(lead),
       });
@@ -259,15 +384,25 @@ export async function POST(req: NextRequest) {
       console.error("[Resend Exception]", err);
     }
 
-    // 2. Send CLIENT the report FROM ravelo.9283@gmail.com
+    // 2. Send CLIENT the report FROM ravelo.9283@gmail.com (with PDF attached)
     try {
+      // Build the PDF separately so a PDF failure never blocks the email.
+      let attachments: { filename: string; content: Buffer; contentType: string }[] = [];
+      try {
+        const pdf = await buildClientReportPdf(lead);
+        attachments = [{ filename: "Ravelo-Cost-of-Manual-Work-Report.pdf", content: pdf, contentType: "application/pdf" }];
+      } catch (pdfErr) {
+        console.error("[PDF Error] Falling back to email without attachment", pdfErr);
+      }
+
       await gmailTransporter.sendMail({
         from: `"Ravelo" <${process.env.GMAIL_USER || "ravelo.9283@gmail.com"}>`,
         to:   lead.email,
         subject: "Your Cost of Manual Work Report – Ravelo",
         html: buildClientReportHtml(lead),
+        attachments,
       });
-      console.log("[Gmail Success] Report sent to:", lead.email);
+      console.log(`[Gmail Success] Report sent to: ${lead.email} (PDF attached: ${attachments.length > 0})`);
     } catch (err) {
       console.error("[Gmail Error]", err);
     }
