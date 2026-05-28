@@ -69,8 +69,8 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
           />
           <span
             style={{
-              fontFamily: "Syne, sans-serif", fontSize: 12, fontWeight: 600,
-              letterSpacing: 2, textTransform: "uppercase", color: "#818cf8",
+              fontFamily: "'Inter', sans-serif", fontSize: 11.5, fontWeight: 600,
+              letterSpacing: 2.5, textTransform: "uppercase", color: "#818cf8",
             }}
           >
             Ravelo
@@ -79,11 +79,11 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
 
         <h1
           style={{
-            fontFamily: "Syne, sans-serif",
-            fontSize: "clamp(32px, 8.5vw, 68px)",
-            fontWeight: 800,
-            lineHeight: 1.05,
-            letterSpacing: "-0.03em",
+            fontFamily: "'Instrument Serif', serif",
+            fontSize: "clamp(40px, 10vw, 84px)",
+            fontWeight: 400,
+            lineHeight: 1.02,
+            letterSpacing: "-0.015em",
             marginBottom: "clamp(14px, 3vw, 20px)",
           }}
         >
@@ -91,6 +91,7 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
           <br />
           <span
             style={{
+              fontStyle: "italic",
               background: "linear-gradient(90deg,#5b8bff,#818cf8,#22d3a5)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
@@ -175,9 +176,10 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
             >
               <div
                 style={{
-                  fontFamily: "Syne, sans-serif",
-                  fontSize: "clamp(18px, 4.5vw, 26px)",
-                  fontWeight: 800,
+                  fontFamily: "'Instrument Serif', serif",
+                  fontSize: "clamp(22px, 5.5vw, 32px)",
+                  fontWeight: 400,
+                  lineHeight: 1,
                   background: "linear-gradient(135deg,#5b8bff,#818cf8)",
                   WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                   whiteSpace: "nowrap",

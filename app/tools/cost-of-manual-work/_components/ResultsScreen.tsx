@@ -70,10 +70,11 @@ export default function ResultsScreen({ result, currency, onReset, onShowShare }
 
         <div
           style={{
-            fontFamily: "Syne, sans-serif", fontWeight: 800,
-            lineHeight: 1, letterSpacing: "-0.03em",
+            fontFamily: "'Instrument Serif', serif", fontWeight: 400,
+            fontStyle: "italic",
+            lineHeight: 1, letterSpacing: "-0.02em",
             marginBottom: 14,
-            fontSize: "clamp(44px, 12vw, 104px)",
+            fontSize: "clamp(56px, 15vw, 128px)",
             background: "linear-gradient(90deg,#f87171,#fb923c)",
             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
             wordBreak: "break-word",
@@ -116,10 +117,11 @@ export default function ResultsScreen({ result, currency, onReset, onShowShare }
             <div style={{ fontSize: 24, marginBottom: 10 }}>{icon}</div>
             <div
               style={{
-                fontFamily: "Syne, sans-serif",
-                fontSize: "clamp(22px, 5.5vw, 30px)",
-                fontWeight: 700, color,
+                fontFamily: "'Instrument Serif', serif",
+                fontSize: "clamp(28px, 6.5vw, 38px)",
+                fontWeight: 400, lineHeight: 1.05, color,
                 wordBreak: "break-word",
+                letterSpacing: "-0.01em",
               }}
             >
               {value}
@@ -145,7 +147,13 @@ export default function ResultsScreen({ result, currency, onReset, onShowShare }
             borderBottom: "1px solid rgba(255,255,255,0.06)",
           }}
         >
-          <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: 17, fontWeight: 700 }}>
+          <h3
+            style={{
+              fontFamily: "'Instrument Serif', serif",
+              fontSize: 22, fontWeight: 400,
+              letterSpacing: "-0.01em",
+            }}
+          >
             Task Breakdown
           </h3>
         </div>
@@ -193,7 +201,13 @@ export default function ResultsScreen({ result, currency, onReset, onShowShare }
                   }}
                 >
                   <span>{Math.round(r.yearlyHours).toLocaleString()} hrs/yr</span>
-                  <span style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, color: "#e8eaf2" }}>
+                  <span
+                    style={{
+                      fontFamily: "'Instrument Serif', serif",
+                      fontSize: 17, fontWeight: 400,
+                      color: "#e8eaf2", letterSpacing: "-0.01em",
+                    }}
+                  >
                     {formatMoney(r.yearlyCost, currency)}
                   </span>
                 </div>
@@ -232,8 +246,10 @@ export default function ResultsScreen({ result, currency, onReset, onShowShare }
       >
         <h3
           style={{
-            fontFamily: "Syne, sans-serif", fontWeight: 700,
-            fontSize: "clamp(18px, 4.5vw, 22px)", marginBottom: 10,
+            fontFamily: "'Instrument Serif', serif", fontWeight: 400,
+            fontStyle: "italic",
+            fontSize: "clamp(22px, 5vw, 28px)", marginBottom: 10,
+            letterSpacing: "-0.01em",
           }}
         >
           Ready to automate this?

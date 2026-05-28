@@ -86,9 +86,9 @@ export default function ShareCard({ result, currency, onClose }: ShareCardProps)
             >
               <span
                 style={{
-                  fontFamily: "Syne, sans-serif", fontSize: 13,
-                  fontWeight: 700, color: "#818cf8",
-                  letterSpacing: 2, textTransform: "uppercase",
+                  fontFamily: "'Inter', sans-serif", fontSize: 12,
+                  fontWeight: 600, color: "#818cf8",
+                  letterSpacing: 2.5, textTransform: "uppercase",
                 }}
               >
                 Ravelo
@@ -103,10 +103,12 @@ export default function ShareCard({ result, currency, onClose }: ShareCardProps)
             </p>
             <div
               style={{
-                fontFamily: "Syne, sans-serif",
-                fontSize: "clamp(30px, 8vw, 52px)",
-                fontWeight: 800,
-                lineHeight: 1.05,
+                fontFamily: "'Instrument Serif', serif",
+                fontSize: "clamp(40px, 10vw, 64px)",
+                fontWeight: 400,
+                fontStyle: "italic",
+                lineHeight: 1.02,
+                letterSpacing: "-0.02em",
                 background: "linear-gradient(90deg,#f87171,#fb923c)",
                 WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                 marginBottom: 8,
@@ -136,9 +138,11 @@ export default function ShareCard({ result, currency, onClose }: ShareCardProps)
                 <div key={label} style={{ minWidth: 0 }}>
                   <div
                     style={{
-                      fontFamily: "Syne, sans-serif", fontWeight: 700,
+                      fontFamily: "'Instrument Serif', serif", fontWeight: 400,
                       color: "#e8eaf2",
-                      fontSize: "clamp(14px, 3.5vw, 18px)",
+                      fontSize: "clamp(18px, 4.5vw, 22px)",
+                      lineHeight: 1.1,
+                      letterSpacing: "-0.01em",
                       wordBreak: "break-word",
                     }}
                   >

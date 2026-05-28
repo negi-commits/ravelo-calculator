@@ -40,8 +40,8 @@ export default function TaskRow({ task, currency, onChange, onRemove, index }: T
           placeholder="Task name"
           style={{
             flex: 1, minWidth: 0,
-            fontFamily: "Syne, sans-serif", fontWeight: 600,
-            fontSize: 16,
+            fontFamily: "'Instrument Serif', serif", fontWeight: 400,
+            fontSize: 20, letterSpacing: "-0.01em",
             background: "transparent", border: "none",
             padding: "6px 0",
             borderBottom: "1px solid rgba(255,255,255,0.1)",

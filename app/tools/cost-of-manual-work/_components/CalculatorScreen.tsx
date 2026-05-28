@@ -94,14 +94,14 @@ export default function CalculatorScreen({
           </button>
           <h2
             style={{
-              fontFamily: "Syne, sans-serif",
-              fontSize: "clamp(24px, 5.5vw, 32px)",
-              fontWeight: 800,
-              lineHeight: 1.15,
-              letterSpacing: "-0.02em",
+              fontFamily: "'Instrument Serif', serif",
+              fontSize: "clamp(32px, 7vw, 44px)",
+              fontWeight: 400,
+              lineHeight: 1.05,
+              letterSpacing: "-0.015em",
             }}
           >
-            Add your tasks
+            Add your <span style={{ fontStyle: "italic" }}>tasks</span>
           </h2>
           <p
             style={{

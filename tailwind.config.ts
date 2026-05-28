@@ -15,8 +15,8 @@ const config: Config = {
         ink: "#06060e",
       },
       fontFamily: {
-        sans: ["DM Sans", "system-ui", "sans-serif"],
-        display: ["Syne", "sans-serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
+        display: ["Instrument Serif", "serif"],
       },
     },
   },

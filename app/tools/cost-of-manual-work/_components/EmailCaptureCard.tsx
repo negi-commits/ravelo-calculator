@@ -44,11 +44,13 @@ export default function EmailCaptureCard({ onSubmit, onSkip, payload }: EmailCap
         <div style={{ fontSize: 44, marginBottom: 14 }}>🎉</div>
         <h3
           style={{
-            fontFamily: "Syne, sans-serif", fontWeight: 700,
-            fontSize: 20, marginBottom: 6,
+            fontFamily: "'Instrument Serif', serif", fontWeight: 400,
+            fontStyle: "italic",
+            fontSize: 26, marginBottom: 6,
+            letterSpacing: "-0.01em",
           }}
         >
-          You are on the list!
+          You are on the list
         </h3>
         <p style={{ color: "#94a3b8", fontSize: 14 }}>
           We will reach out with a personalised automation plan.
@@ -86,12 +88,13 @@ export default function EmailCaptureCard({ onSubmit, onSkip, payload }: EmailCap
 
       <h3
         style={{
-          fontFamily: "Syne, sans-serif", fontWeight: 800,
-          fontSize: "clamp(18px, 4.5vw, 22px)",
+          fontFamily: "'Instrument Serif', serif", fontWeight: 400,
+          fontSize: "clamp(24px, 5.5vw, 30px)",
+          lineHeight: 1.1, letterSpacing: "-0.015em",
           marginBottom: 8,
         }}
       >
-        Want a free automation plan?
+        Want a <span style={{ fontStyle: "italic" }}>free</span> automation plan?
       </h3>
       <p
         style={{
