@@ -20,25 +20,39 @@ export default function TaskRow({ task, currency, onChange, onRemove, index }: T
       style={{
         background: "rgba(255,255,255,0.03)",
         border: "1px solid rgba(255,255,255,0.07)",
-        borderRadius: 16, padding: 20,
-        animation: `fadeUp 0.4s ${index * 0.06}s both`,
+        borderRadius: 16,
+        padding: "clamp(14px, 3.5vw, 20px)",
+        animation: `fadeUp 0.4s ${index * 0.05}s both`,
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16, gap: 12 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 14,
+          gap: 10,
+        }}
+      >
         <input
           value={task.name}
           onChange={(e) => onChange({ ...task, name: e.target.value })}
           placeholder="Task name"
           style={{
-            flex: 1, fontFamily: "Syne, sans-serif", fontWeight: 600, fontSize: 15,
-            background: "transparent", border: "none", padding: 0,
-            borderBottom: "1px solid rgba(255,255,255,0.1)", borderRadius: 0,
+            flex: 1, minWidth: 0,
+            fontFamily: "Syne, sans-serif", fontWeight: 600,
+            fontSize: 16,
+            background: "transparent", border: "none",
+            padding: "6px 0",
+            borderBottom: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: 0, minHeight: 0,
           }}
         />
-        <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
           <span
             style={{
-              fontSize: 11, fontWeight: 600, padding: "3px 8px", borderRadius: 20,
+              fontSize: 11, fontWeight: 600,
+              padding: "3px 8px", borderRadius: 20,
               background: `${badge.color}1a`, color: badge.color,
               border: `1px solid ${badge.color}33`, whiteSpace: "nowrap",
             }}
@@ -47,10 +61,15 @@ export default function TaskRow({ task, currency, onChange, onRemove, index }: T
           </span>
           <button
             onClick={onRemove}
+            aria-label="Remove task"
             style={{
-              background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.15)",
-              color: "#f87171", borderRadius: 6, width: 28, height: 28, cursor: "pointer",
-              fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center",
+              background: "rgba(239,68,68,0.1)",
+              border: "1px solid rgba(239,68,68,0.15)",
+              color: "#f87171", borderRadius: 8,
+              width: 32, height: 32, cursor: "pointer",
+              fontSize: 18, display: "flex",
+              alignItems: "center", justifyContent: "center",
+              flexShrink: 0,
             }}
           >
             ×
@@ -58,19 +77,26 @@ export default function TaskRow({ task, currency, onChange, onRemove, index }: T
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(140px,1fr))", gap: 12 }}>
+      <div className="task-grid">
         {[
           { label: "People", key: "people" as keyof Task, min: 1 },
           { label: "Minutes / task", key: "minutesPerTask" as keyof Task, min: 1 },
-          { label: "Times per period", key: "instancesPerPeriod" as keyof Task, min: 1 },
-          { label: `Hourly cost (${CURRENCIES[currency].symbol})`, key: "hourlyCost" as keyof Task, min: 1 },
+          { label: "Times / period", key: "instancesPerPeriod" as keyof Task, min: 1 },
+          { label: `Hourly (${CURRENCIES[currency].symbol})`, key: "hourlyCost" as keyof Task, min: 1 },
         ].map(({ label, key, min }) => (
-          <div key={key}>
-            <label style={{ fontSize: 11, color: "#6b7280", display: "block", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>
+          <div key={key} style={{ minWidth: 0 }}>
+            <label
+              style={{
+                fontSize: 11, color: "#6b7280",
+                display: "block", marginBottom: 5,
+                textTransform: "uppercase", letterSpacing: 0.5,
+              }}
+            >
               {label}
             </label>
             <input
               type="number"
+              inputMode="numeric"
               min={min}
               value={task[key] as number}
               onChange={(e) => onChange({ ...task, [key]: Math.max(min, Number(e.target.value)) })}
@@ -78,19 +104,34 @@ export default function TaskRow({ task, currency, onChange, onRemove, index }: T
           </div>
         ))}
 
-        <div>
-          <label style={{ fontSize: 11, color: "#6b7280", display: "block", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>
+        <div style={{ minWidth: 0 }}>
+          <label
+            style={{
+              fontSize: 11, color: "#6b7280",
+              display: "block", marginBottom: 5,
+              textTransform: "uppercase", letterSpacing: 0.5,
+            }}
+          >
             Frequency
           </label>
-          <select value={task.frequency} onChange={(e) => onChange({ ...task, frequency: e.target.value as Task["frequency"] })}>
+          <select
+            value={task.frequency}
+            onChange={(e) => onChange({ ...task, frequency: e.target.value as Task["frequency"] })}
+          >
             <option value="daily">Daily</option>
             <option value="weekly">Weekly</option>
             <option value="monthly">Monthly</option>
           </select>
         </div>
 
-        <div>
-          <label style={{ fontSize: 11, color: "#6b7280", display: "block", marginBottom: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>
+        <div style={{ minWidth: 0 }}>
+          <label
+            style={{
+              fontSize: 11, color: "#6b7280",
+              display: "block", marginBottom: 5,
+              textTransform: "uppercase", letterSpacing: 0.5,
+            }}
+          >
             Automation
           </label>
           <select

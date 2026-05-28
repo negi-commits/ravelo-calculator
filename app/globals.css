@@ -17,6 +17,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
@@ -25,27 +26,53 @@ body {
   color: #e8eaf2;
   font-family: 'DM Sans', system-ui, sans-serif;
   min-height: 100vh;
+  min-height: 100svh;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 input,
-select {
+select,
+textarea {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--border);
   color: #e8eaf2;
-  border-radius: 8px;
-  padding: 8px 12px;
+  border-radius: 10px;
+  padding: 11px 13px;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 16px; /* >=16px so iOS Safari doesn't auto-zoom on focus */
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
   width: 100%;
+  min-height: 44px; /* comfortable tap target */
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+@media (min-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 14px;
+    padding: 9px 12px;
+    min-height: 40px;
+  }
 }
 
 input:focus,
-select:focus {
+select:focus,
+textarea:focus {
   border-color: var(--brand);
-  box-shadow: 0 0 0 3px rgba(91, 139, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(91, 139, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+select {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8.5L1.5 4h9z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
 }
 
 select option {
@@ -59,10 +86,12 @@ input[type='number']::-webkit-inner-spin-button {
 button {
   cursor: pointer;
   font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
 }
 
 ::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
@@ -75,7 +104,7 @@ button {
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -84,8 +113,8 @@ button {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(91, 139, 255, 0.2); }
-  50% { box-shadow: 0 0 40px rgba(91, 139, 255, 0.5); }
+  0%, 100% { box-shadow: 0 0 16px rgba(91, 139, 255, 0.2); }
+  50% { box-shadow: 0 0 32px rgba(91, 139, 255, 0.45); }
 }
 
 @keyframes bar-grow {
@@ -93,14 +122,78 @@ button {
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
 .animate-fade-up {
-  animation: fadeUp 0.6s ease both;
+  animation: fadeUp 0.55s ease both;
 }
 
 .animate-float {
   animation: float 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Responsive grid for task inputs.
+   1 column on tiny screens, 2 on small phones, 3+ from tablet up. */
+.task-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (min-width: 480px) {
+  .task-grid { gap: 12px; }
+}
+@media (min-width: 720px) {
+  .task-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 960px) {
+  .task-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+/* Responsive grid for the 3 stat cards on the results page. */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+@media (min-width: 560px) {
+  .stat-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+/* Horizontal preset scroller on mobile, wrapping flex on desktop. */
+.preset-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.preset-row::-webkit-scrollbar { display: none; }
+.preset-row > * { scroll-snap-align: start; flex: 0 0 auto; }
+@media (min-width: 720px) {
+  .preset-row {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
 }

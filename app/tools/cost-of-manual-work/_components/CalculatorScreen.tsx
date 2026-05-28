@@ -62,37 +62,79 @@ export default function CalculatorScreen({
     onTasksChange(tasks.filter((t) => t.id !== id));
   }
 
+  const canCalculate = tasks.length > 0;
+
   return (
-    <div style={{ maxWidth: 1080, margin: "0 auto", padding: "64px 24px 96px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 40, flexWrap: "wrap", gap: 12 }}>
-        <div>
+    <div
+      style={{
+        maxWidth: 1080,
+        margin: "0 auto",
+        padding: "clamp(28px, 6vw, 64px) clamp(16px, 4vw, 32px) clamp(120px, 18vw, 96px)",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          marginBottom: "clamp(24px, 5vw, 40px)",
+          gap: 12,
+        }}
+      >
+        <div style={{ flex: 1, minWidth: 0 }}>
           <button
             onClick={onBack}
-            style={{ background: "none", border: "none", color: "#6b7280", fontSize: 13, cursor: "pointer", marginBottom: 8, padding: 0, display: "flex", alignItems: "center", gap: 4 }}
+            style={{
+              background: "none", border: "none", color: "#6b7280",
+              fontSize: 13, cursor: "pointer", marginBottom: 8, padding: 0,
+              display: "inline-flex", alignItems: "center", gap: 4,
+            }}
           >
             ← Back
           </button>
-          <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: 32, fontWeight: 800 }}>
+          <h2
+            style={{
+              fontFamily: "Syne, sans-serif",
+              fontSize: "clamp(24px, 5.5vw, 32px)",
+              fontWeight: 800,
+              lineHeight: 1.15,
+              letterSpacing: "-0.02em",
+            }}
+          >
             Add your tasks
           </h2>
-          <p style={{ color: "#6b7280", fontSize: 15, marginTop: 6 }}>
+          <p
+            style={{
+              color: "#6b7280",
+              fontSize: "clamp(13px, 3.4vw, 15px)",
+              marginTop: 6,
+            }}
+          >
             The more tasks you add, the more accurate your number.
           </p>
         </div>
         <CurrencySelect value={currency} onChange={onCurrencyChange} />
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 24 }}>
+      <div
+        style={{
+          display: "flex", flexDirection: "column",
+          gap: 12, marginBottom: 20,
+        }}
+      >
         {tasks.length === 0 && (
           <div
             style={{
-              textAlign: "center", padding: "60px 20px",
+              textAlign: "center",
+              padding: "clamp(40px, 8vw, 60px) 20px",
               border: "2px dashed rgba(255,255,255,0.07)",
               borderRadius: 16, color: "#6b7280",
             }}
           >
-            <div style={{ fontSize: 40, marginBottom: 12 }}>📋</div>
-            <p>No tasks yet. Add one below or pick from presets.</p>
+            <div style={{ fontSize: 36, marginBottom: 10 }}>📋</div>
+            <p style={{ fontSize: 14 }}>
+              No tasks yet. Pick a preset below or add a custom one.
+            </p>
           </div>
         )}
         {tasks.map((t, i) => (
@@ -106,12 +148,31 @@ export default function CalculatorScreen({
 
       <PresetPicker onAdd={addPreset} />
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 24, flexWrap: "wrap", gap: 12 }}>
-        <Btn onClick={addTask} variant="ghost">+ Add Custom Task</Btn>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: 24,
+          gap: 10,
+          flexWrap: "wrap",
+        }}
+      >
+        <Btn
+          onClick={addTask}
+          variant="ghost"
+          style={{ flex: "1 1 auto", justifyContent: "center", minWidth: 140 }}
+        >
+          + Add Custom Task
+        </Btn>
         <Btn
           onClick={onCalculate}
-          disabled={tasks.length === 0}
-          style={{ fontSize: 15, padding: "12px 28px" }}
+          disabled={!canCalculate}
+          style={{
+            fontSize: 15, padding: "12px 24px",
+            flex: "1 1 auto", justifyContent: "center", minWidth: 180,
+          }}
         >
           See My Annual Cost →
         </Btn>

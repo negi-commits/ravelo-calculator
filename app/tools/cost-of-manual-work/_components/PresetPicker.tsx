@@ -10,10 +10,10 @@ interface PresetPickerProps {
 export default function PresetPicker({ onAdd }: PresetPickerProps) {
   return (
     <div>
-      <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 12 }}>
+      <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 10 }}>
         Quick-add a common task:
       </p>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+      <div className="preset-row">
         {PRESETS.map((p) => (
           <button
             key={p.key}
@@ -22,9 +22,17 @@ export default function PresetPicker({ onAdd }: PresetPickerProps) {
               background: "rgba(255,255,255,0.04)",
               border: "1px solid rgba(255,255,255,0.09)",
               color: "#c4c9d8",
-              borderRadius: 8, padding: "7px 14px", fontSize: 13,
-              cursor: "pointer", display: "flex", alignItems: "center", gap: 6,
-              transition: "all 0.15s", fontFamily: "inherit",
+              borderRadius: 10,
+              padding: "9px 14px",
+              fontSize: 13.5,
+              cursor: "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              transition: "all 0.15s",
+              fontFamily: "inherit",
+              minHeight: 38,
+              whiteSpace: "nowrap",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = "rgba(91,139,255,0.15)";

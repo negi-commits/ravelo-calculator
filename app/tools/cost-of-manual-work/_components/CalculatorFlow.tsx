@@ -83,12 +83,17 @@ export default function CalculatorFlow() {
             {showEmail && (
               <div
                 style={{
-                  position: "fixed", bottom: 0, left: 0, right: 0,
+                  position: "fixed",
+                  bottom: 0, left: 0, right: 0,
                   background: "rgba(6,6,14,0.97)",
                   backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
                   borderTop: "1px solid rgba(91,139,255,0.2)",
+                  boxShadow: "0 -12px 40px rgba(0,0,0,0.4)",
                   zIndex: 50,
                   animation: "fadeUp 0.5s ease both",
+                  maxHeight: "85svh",
+                  overflowY: "auto",
                 }}
               >
                 <EmailCaptureCard

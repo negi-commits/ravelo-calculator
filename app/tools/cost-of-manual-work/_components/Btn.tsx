@@ -17,7 +17,7 @@ const VARIANTS: Record<Variant, React.CSSProperties> = {
   primary: {
     background: "linear-gradient(135deg, #5b8bff, #818cf8)",
     color: "#fff",
-    boxShadow: "0 4px 20px rgba(91,139,255,0.35)",
+    boxShadow: "0 6px 20px rgba(91,139,255,0.32)",
     border: "none",
   },
   ghost: {
@@ -34,7 +34,7 @@ const VARIANTS: Record<Variant, React.CSSProperties> = {
     background: "linear-gradient(135deg, #22d3a5, #0ea5e9)",
     color: "#06060e",
     fontWeight: 700,
-    boxShadow: "0 4px 20px rgba(34,211,165,0.35)",
+    boxShadow: "0 6px 20px rgba(34,211,165,0.32)",
     border: "none",
   },
 };
@@ -53,17 +53,20 @@ export default function Btn({
       onClick={onClick}
       disabled={disabled}
       style={{
-        borderRadius: 10,
+        borderRadius: 12,
         fontFamily: "inherit",
         fontWeight: 600,
         fontSize: 14,
-        transition: "all 0.2s",
+        transition: "transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease",
         cursor: disabled ? "not-allowed" : "pointer",
-        padding: "10px 20px",
+        padding: "11px 20px",
+        minHeight: 44,
         display: "inline-flex",
         alignItems: "center",
+        justifyContent: "center",
         gap: 6,
         opacity: disabled ? 0.5 : 1,
+        whiteSpace: "nowrap",
         ...VARIANTS[variant],
         ...style,
       }}

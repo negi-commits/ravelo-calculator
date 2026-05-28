@@ -34,25 +34,75 @@ export default function EmailCaptureCard({ onSubmit, onSkip, payload }: EmailCap
 
   if (submitted) {
     return (
-      <div style={{ textAlign: "center", padding: 40, animation: "fadeUp 0.4s ease both" }}>
-        <div style={{ fontSize: 48, marginBottom: 16 }}>🎉</div>
-        <h3 style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: 20, marginBottom: 8 }}>
+      <div
+        style={{
+          textAlign: "center",
+          padding: "32px 20px",
+          animation: "fadeUp 0.4s ease both",
+        }}
+      >
+        <div style={{ fontSize: 44, marginBottom: 14 }}>🎉</div>
+        <h3
+          style={{
+            fontFamily: "Syne, sans-serif", fontWeight: 700,
+            fontSize: 20, marginBottom: 6,
+          }}
+        >
           You are on the list!
         </h3>
-        <p style={{ color: "#94a3b8" }}>We will reach out with a personalised automation plan.</p>
+        <p style={{ color: "#94a3b8", fontSize: 14 }}>
+          We will reach out with a personalised automation plan.
+        </p>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: 440, margin: "0 auto", padding: "32px 24px", animation: "fadeUp 0.4s ease both" }}>
-      <h3 style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: 22, marginBottom: 8 }}>
+    <div
+      style={{
+        position: "relative",
+        maxWidth: 440,
+        margin: "0 auto",
+        padding: "clamp(20px, 5vw, 32px) clamp(18px, 4vw, 24px)",
+        paddingBottom: "calc(clamp(20px, 5vw, 32px) + env(safe-area-inset-bottom))",
+        animation: "fadeUp 0.4s ease both",
+      }}
+    >
+      <button
+        onClick={onSkip}
+        aria-label="Dismiss"
+        style={{
+          position: "absolute", top: 10, right: 12,
+          background: "rgba(255,255,255,0.04)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          color: "#94a3b8", borderRadius: 999,
+          width: 32, height: 32,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          cursor: "pointer", fontSize: 18, lineHeight: 1,
+        }}
+      >
+        ×
+      </button>
+
+      <h3
+        style={{
+          fontFamily: "Syne, sans-serif", fontWeight: 800,
+          fontSize: "clamp(18px, 4.5vw, 22px)",
+          marginBottom: 8,
+        }}
+      >
         Want a free automation plan?
       </h3>
-      <p style={{ color: "#94a3b8", fontSize: 14, marginBottom: 24 }}>
-        We will review your tasks and show you exactly what can be automated - no commitment needed.
+      <p
+        style={{
+          color: "#94a3b8",
+          fontSize: "clamp(13px, 3.4vw, 14px)",
+          marginBottom: 20, lineHeight: 1.5,
+        }}
+      >
+        We will review your tasks and show you exactly what can be automated — no commitment.
       </p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         <input
           placeholder="Your name (optional)"
           value={name}
@@ -63,17 +113,23 @@ export default function EmailCaptureCard({ onSubmit, onSkip, payload }: EmailCap
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           type="email"
+          inputMode="email"
+          autoComplete="email"
         />
         <Btn
           onClick={handleSubmit}
           disabled={!email.includes("@") || loading}
-          style={{ width: "100%", justifyContent: "center" }}
+          style={{ width: "100%", justifyContent: "center", padding: "13px 20px" }}
         >
           {loading ? "Sending..." : "Get My Automation Plan"}
         </Btn>
         <button
           onClick={onSkip}
-          style={{ background: "none", border: "none", color: "#6b7280", fontSize: 13, cursor: "pointer", padding: 4 }}
+          style={{
+            background: "none", border: "none",
+            color: "#6b7280", fontSize: 13,
+            cursor: "pointer", padding: 6,
+          }}
         >
           Skip for now
         </button>

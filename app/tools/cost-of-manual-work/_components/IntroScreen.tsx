@@ -10,28 +10,32 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
   return (
     <div
       style={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        padding: "40px 20px",
+        padding: "clamp(32px, 8vw, 64px) clamp(20px, 5vw, 32px)",
         position: "relative",
         overflow: "hidden",
       }}
     >
       {/* Ambient blobs */}
       <div
+        aria-hidden
         style={{
-          position: "fixed", top: -200, left: -200, width: 600, height: 600,
+          position: "fixed", top: "-30vw", left: "-30vw",
+          width: "60vw", height: "60vw", maxWidth: 600, maxHeight: 600,
           borderRadius: "50%",
           background: "radial-gradient(circle, rgba(91,139,255,0.12) 0%, transparent 70%)",
           pointerEvents: "none",
         }}
       />
       <div
+        aria-hidden
         style={{
-          position: "fixed", bottom: -200, right: -200, width: 500, height: 500,
+          position: "fixed", bottom: "-25vw", right: "-25vw",
+          width: "50vw", height: "50vw", maxWidth: 500, maxHeight: 500,
           borderRadius: "50%",
           background: "radial-gradient(circle, rgba(129,140,248,0.1) 0%, transparent 70%)",
           pointerEvents: "none",
@@ -41,6 +45,7 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
       <div
         style={{
           maxWidth: 620,
+          width: "100%",
           textAlign: "center",
           animation: "fadeUp 0.7s ease both",
         }}
@@ -48,10 +53,11 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
         {/* Logo badge */}
         <div
           style={{
-            display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 32,
+            display: "inline-flex", alignItems: "center", gap: 8,
+            marginBottom: "clamp(20px, 4vw, 32px)",
             background: "rgba(91,139,255,0.12)",
             border: "1px solid rgba(91,139,255,0.2)",
-            borderRadius: 100, padding: "6px 16px",
+            borderRadius: 100, padding: "6px 14px",
           }}
         >
           <div
@@ -63,7 +69,7 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
           />
           <span
             style={{
-              fontFamily: "Syne, sans-serif", fontSize: 13, fontWeight: 600,
+              fontFamily: "Syne, sans-serif", fontSize: 12, fontWeight: 600,
               letterSpacing: 2, textTransform: "uppercase", color: "#818cf8",
             }}
           >
@@ -74,11 +80,11 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
         <h1
           style={{
             fontFamily: "Syne, sans-serif",
-            fontSize: "clamp(36px,6vw,68px)",
+            fontSize: "clamp(32px, 8.5vw, 68px)",
             fontWeight: 800,
             lineHeight: 1.05,
-            letterSpacing: -2,
-            marginBottom: 20,
+            letterSpacing: "-0.03em",
+            marginBottom: "clamp(14px, 3vw, 20px)",
           }}
         >
           How much is manual
@@ -96,21 +102,45 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
 
         <p
           style={{
-            fontSize: 18, color: "#94a3b8", lineHeight: 1.7,
-            maxWidth: 480, margin: "0 auto 40px",
+            fontSize: "clamp(15px, 3.6vw, 18px)",
+            color: "#94a3b8", lineHeight: 1.6,
+            maxWidth: 480,
+            margin: "0 auto clamp(28px, 5vw, 40px)",
           }}
         >
-          Add your repetitive tasks, set your team size and hourly rates - see
+          Add your repetitive tasks, set your team size and hourly rates — see
           the real annual cost in seconds.
         </p>
 
-        <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-          <Btn onClick={onStart} style={{ fontSize: 16, padding: "14px 32px" }}>
+        <div
+          style={{
+            display: "flex", flexDirection: "column", alignItems: "center",
+            gap: 14,
+          }}
+        >
+          <Btn
+            onClick={onStart}
+            style={{
+              fontSize: 16, padding: "14px 28px",
+              width: "100%", maxWidth: 320, justifyContent: "center",
+            }}
+          >
             Calculate My Cost →
           </Btn>
-          <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex", gap: 14, alignItems: "center",
+              flexWrap: "wrap", justifyContent: "center",
+            }}
+          >
             {["Free", "No signup", "2 min"].map((t) => (
-              <span key={t} style={{ fontSize: 13, color: "#6b7280", display: "flex", alignItems: "center", gap: 4 }}>
+              <span
+                key={t}
+                style={{
+                  fontSize: 13, color: "#6b7280",
+                  display: "inline-flex", alignItems: "center", gap: 4,
+                }}
+              >
                 <span style={{ color: "#22d3a5" }}>✓</span> {t}
               </span>
             ))}
@@ -120,35 +150,49 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
         {/* Floating stats */}
         <div
           style={{
-            display: "flex", gap: 16, justifyContent: "center",
-            marginTop: 56, flexWrap: "wrap",
+            display: "grid",
+            gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+            gap: "clamp(8px, 2vw, 16px)",
+            marginTop: "clamp(40px, 8vw, 56px)",
           }}
         >
           {[
             { val: "₹8.4L+", label: "avg. yearly waste" },
             { val: "40%",    label: "time automatable" },
             { val: "7 types", label: "of manual tasks" },
-          ].map(({ val, label }) => (
+          ].map(({ val, label }, i) => (
             <div
               key={label}
               style={{
                 background: "rgba(255,255,255,0.04)",
                 border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 16, padding: "20px 28px",
+                borderRadius: 14,
+                padding: "clamp(14px, 3vw, 22px) clamp(10px, 2.5vw, 24px)",
                 backdropFilter: "blur(20px)",
-                animation: "float 4s ease-in-out infinite",
+                animation: `float 4s ease-in-out ${i * 0.4}s infinite`,
+                minWidth: 0,
               }}
             >
               <div
                 style={{
-                  fontFamily: "Syne, sans-serif", fontSize: 26, fontWeight: 800,
+                  fontFamily: "Syne, sans-serif",
+                  fontSize: "clamp(18px, 4.5vw, 26px)",
+                  fontWeight: 800,
                   background: "linear-gradient(135deg,#5b8bff,#818cf8)",
                   WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+                  whiteSpace: "nowrap",
                 }}
               >
                 {val}
               </div>
-              <div style={{ fontSize: 12, color: "#6b7280", marginTop: 4 }}>{label}</div>
+              <div
+                style={{
+                  fontSize: "clamp(10px, 2.6vw, 12px)",
+                  color: "#6b7280", marginTop: 4,
+                }}
+              >
+                {label}
+              </div>
             </div>
           ))}
         </div>
